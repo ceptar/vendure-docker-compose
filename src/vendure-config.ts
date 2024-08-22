@@ -7,7 +7,7 @@ import path from 'path';
 export const config: VendureConfig = {
     apiOptions: {
         hostname: '0.0.0.0',
-        port: 3000,
+        port: +(process.env.PORT || 3000),
         adminApiPath: 'admin-api',
         adminApiPlayground: {
             settings: {
@@ -25,8 +25,8 @@ export const config: VendureConfig = {
     },
     authOptions: {
         superadminCredentials: {
-            identifier: 'superadmin',
-            password: 'superadmin',
+            identifier: process.env.SUPERADMIN_USERNAME,
+            password: process.env.SUPERADMIN_PASSWORD,
         },
         requireVerification: true,
         cookieOptions: {
@@ -37,11 +37,11 @@ export const config: VendureConfig = {
         type: 'postgres',
         synchronize: false, // turn this off for production
         logging: false,
-        database: 'vendure',
-        host: process.env.DATABASE_HOST || 'localhost',
-        port: Number(process.env.DATABASE_PORT) || 5432,
-        username: process.env.POSTGRES_USER || 'postgres',
-        password: process.env.POSTGRES_PASSWORD || 'password',
+        database: process.env.DB_NAME,
+        host: process.env.DB_HOST,
+        port: +process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
         migrations: [path.join(__dirname, '../migrations/*.ts')],
     },
     paymentOptions: {
@@ -51,8 +51,7 @@ export const config: VendureConfig = {
     plugins: [
         AssetServerPlugin.init({
             route: 'assets',
-            assetUploadDir: path.join(__dirname, '../static/assets'),
-            assetUrlPrefix: 'http://localhost:3000/assets/',
+            assetUploadDir: process.env.ASSET_UPLOAD_DIR || path.join(__dirname, '../static/assets'),
         }),
         DefaultJobQueuePlugin,
         DefaultSearchPlugin,
