@@ -25,8 +25,8 @@ export const config: VendureConfig = {
     },
     authOptions: {
         superadminCredentials: {
-            identifier: process.env.SUPERADMIN_USERNAME,
-            password: process.env.SUPERADMIN_PASSWORD,
+            identifier: process.env.SUPERADMIN_USERNAME || 'superadmin',
+            password: process.env.SUPERADMIN_PASSWORD || 'redubash',
         },
         requireVerification: true,
         cookieOptions: {
@@ -37,11 +37,11 @@ export const config: VendureConfig = {
         type: 'postgres',
         synchronize: false, // turn this off for production
         logging: false,
-        database: process.env.DB_NAME,
-        host: process.env.DB_HOST,
-        port: +process.env.DB_PORT,
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
+        database: 'venduredb',
+        host: 'dokku-postgres-venduredb',
+        port: 5432,
+        username: 'postgres',
+        password: 'b5714c2a7431a019edbb511a56a283ff',
         migrations: [path.join(__dirname, '../migrations/*.ts')],
     },
     paymentOptions: {
