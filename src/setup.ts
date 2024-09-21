@@ -59,9 +59,10 @@ export async function setupServer() {
         }
     }
 }
-
+// FOR CLEAN INSTALL WITH DEMO DATA SET TO TRUE !!!
 function isInitialRun(): boolean {
-    return !fs.pathExistsSync(emailTemplateDir);
+    // return !fs.pathExistsSync(emailTemplateDir);
+    return false;
 }
 
 /**

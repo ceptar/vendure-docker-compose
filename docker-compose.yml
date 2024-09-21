@@ -6,11 +6,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3000:3000
-    command: ["./wait-for-it.sh", "database:5432", "--", "yarn", "start:server"]
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "yarn", "start:server"]
     volumes:
       - /usr/src/app
     environment:
-      DATABASE_HOST: database
+      DATABASE_HOST: '172.18.0.1'
       DATABASE_PORT: 5432
     depends_on:
       - database
@@ -19,26 +19,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["./wait-for-it.sh", "database:5432", "--", "yarn", "start:worker"]
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "yarn", "start:worker"]
     volumes:
       - /usr/src/app
     environment:
-      DATABASE_HOST: database
+      DATABASE_HOST: '172.18.0.1'
       DATABASE_PORT: 5432
     depends_on:
       - database
   storefront:
     build:
-      context: .
-      dockerfile: Dockerfile-storefront
-      args:
-        STOREFRONT_VERSION: 0.3.1
+      context: ../../front/storefront-remix-starter
+      dockerfile: ../../backend/vendure-docker-compose/Dockerfile-storefront
     ports:
-      - 4000:4000
+      - 8788:8788
     environment:
-      SERVER_API_HOST: http://server
+      SERVER_API_HOST: http://172.18.0.1:3000
       SERVER_API_PORT: 3000
-      SERVER_API_PATH: shop-api
+      SERVER_API_PATH: shop-api  
   database:
     image: postgres
     volumes:
