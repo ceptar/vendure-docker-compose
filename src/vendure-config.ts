@@ -10,7 +10,7 @@ const IS_DEV = process.env.APP_ENV === 'dev';
 export const config: VendureConfig = {
     apiOptions: {
         hostname: '0.0.0.0',
-        port: 3000,
+        port: +(process.env.PORT || 3000),
         adminApiPath: 'admin-api',
         shopApiPath: 'shop-api',
     },
@@ -30,11 +30,11 @@ export const config: VendureConfig = {
         type: 'postgres',
         synchronize: false, // turn this off for production
         logging: false,
-        database: 'vendurezwei',
-        host: '172.17.0.1',
-        port: 5432,
-        username: 'postgres',
-        password: 'aergsgd5sgdr',
+        database: process.env.DB_NAME,
+        host: process.env.DB_HOST,
+        port: +process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
         migrations: [path.join(__dirname, '../migrations/*.ts')],
     },
     paymentOptions: {
@@ -44,9 +44,8 @@ export const config: VendureConfig = {
     plugins: [
         AssetServerPlugin.init({
             route: 'assets',
-            assetUploadDir: path.join(__dirname, '../static/assets'),
-            assetUrlPrefix: 'https://discobabes.store/assets/',
-            }),
+            assetUploadDir: process.env.ASSET_UPLOAD_DIR || path.join(__dirname, '../static/assets'),
+        }),
         DefaultJobQueuePlugin,
         DefaultSearchPlugin,
         AdminUiPlugin.init({
